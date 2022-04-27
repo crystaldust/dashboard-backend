@@ -1,7 +1,7 @@
 import os
 
 import uvicorn
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from ck import CKServer
@@ -35,7 +35,10 @@ ck_server = CKServer(CK_HOST, CK_PORT, CK_USER, CK_PASS, CK_DB)
 
 
 @app.post('/sql/transfer')
-async def get_developer_activities(sql: str):
+async def get_developer_activities(request: Request):
+    sql_bytes: bytearray = await request.body()
+    sql = sql_bytes.decode('utf-8')
+
     if not sql:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE)
 

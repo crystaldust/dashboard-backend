@@ -20,7 +20,7 @@ class CKServer:
         return result
 
     def execute_no_params(self, sql: object):
-        result = self.client.execute(sql)
+        result = self.client.execute(sql, with_column_types=True)
         return result
 
     def fetchall(self, sql):
